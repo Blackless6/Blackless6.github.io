@@ -1,0 +1,835 @@
+@font-face {
+  font-family: "titleFont";
+  src: url("fonts/RIXGOB.TTF");
+}
+
+@font-face {
+  font-family: "mainFont";
+  src: url("fonts/RIXGOL.TTF");
+}
+
+@font-face {
+  font-family: "buttonFont";
+  src: url("fonts/RIXGOM.TTF");
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+#checkArea {
+  font: 22px "buttonFont";
+  text-align: center;
+  color: #EDE3CF;
+  text-shadow: 2px 2px #00000088;
+}
+
+#regArea {
+  font: 22px "buttonFont";
+  text-align: center;
+  color: #EDE3CF;
+  text-shadow: 2px 2px #00000088;
+}
+
+#title{
+  font: 70px "titleFont";
+  font-weight: bold;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#subtitle{
+  font: 50px "titleFont";
+  font-weight: bold;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#result{
+  font: 50px "titleFont";
+  font-weight: bold;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#resultTable1{
+  /* position: absolute;
+  left: 800px;
+  top: 180px; */
+  border-top: 2px solid #00000088;
+  background-color: #66000088;
+}
+
+#resultTable2{
+  /* position: absolute;
+  left: 1300px;
+  top: 180px; */
+  border-top: 2px solid #00000088;
+  background-color: #00006688;
+}
+
+#teamTable1{
+  border-top: 2px solid #000;
+  background-color: #66000088;
+}
+
+.regSetupArea {
+  text-align: center;
+}
+
+.resultTable1Head {
+  font: 32px "titleFont";
+  font-weight: bold;
+  border-bottom: 1px solid #444444;
+  width: 180px;
+  height: 50px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.resultTable2Head {
+  font: 32px "titleFont";
+  font-weight: bold;
+  border-bottom: 1px solid #444444;
+  width: 180px;
+  height: 50px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.resultTable1Body {
+  font: 28px "mainFont";
+  border-bottom: 1px solid #444444;
+  width: 180px;
+  height: 40px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.resultTable2Body {
+  font: 28px "mainFont";
+  border-bottom: 1px solid #444444;
+  width: 180px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.teamTable1Head {
+  font: 16px "titleFont";
+  font-weight: bold;
+  border-bottom: 1px solid #444444;
+  width: 90px;
+  height: 25px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.teamTable1Body {
+  font: 14px "mainFont";
+  font-weight: bold;
+  border-bottom: 1px solid #444444;
+  width: 90px;
+  height: 25px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.teamTable2Head {
+  font: 16px "titleFont";
+  font-weight: bold;
+  border-bottom: 1px solid #444444;
+  width: 90px;
+  height: 25px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.teamTable2Body {
+  font: 14px "mainFont";
+  font-weight: bold;
+  border-bottom: 1px solid #444444;
+  width: 90px;
+  height: 25px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#regTable{
+  margin-top: 30px;
+  border-top: 2px solid #000;
+  background-color: #27006688;
+}
+
+.regTableHead {
+  font: 28px "titleFont";
+  font-weight: bold;
+  border-bottom: 1px solid #444444;
+  width: 600px;
+  height: 50px;
+  text-align: center;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.regTableBody {
+  font: 24px "mainFont";
+  border-bottom: 1px solid #444444;
+  width: 600px;
+  margin: auto;
+  max-height: 400px;   /* table grows until this, then scrolls */
+  overflow-y: auto;    /* scroll appears if too tall */
+  text-align: center;
+  /* background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  color: #ede3cf
+}
+
+.gradText{
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.checkObj{
+  height: 15px;
+  width: 15px;
+  margin-left: 3%;
+}
+
+.checkObj2{
+  height: 15px;
+  width: 15px;
+  margin-left: 3%;
+}
+
+.userInputBox{
+  height: 20px;
+  width: 200px;
+  background-color: #13181F;
+  border: solid 1px #785A28;
+  color: #F0E6D2;
+  font-family: "buttonFont";
+}
+
+.userInputBoxSmall{
+  height: 20px;
+  width: 64px;
+  background-color: #13181F;
+  border: solid 1px #785A28;
+  color: #F0E6D2;
+  font-family: "buttonFont";
+}
+
+.regInputBoxSmall {
+  height: 27px;
+  width: 72px;
+  background-color: #13181F;
+  border: solid 1px #785A28;
+  color: #b8af9f;
+  font-family: "buttonFont";
+  transition: all 0.2s ease;
+}
+
+/* Editable state */
+.regInputBoxSmall:enabled {
+  background-color: #1a304e;
+  border: solid 1px #9c7023;
+  color: #F0E6D2;
+}
+
+/* Disabled state */
+.regInputBoxSmall:disabled {
+  height: 27px;
+  width: 72px;
+  background-color: #13181F;
+  border: solid 1px #785A28;
+  color: #b8af9f;
+  font-family: "buttonFont";
+}
+
+.userInputBoxMed{
+  height: 20px;
+  width: 112px;
+  background-color: #13181F;
+  border: solid 1px #785A28;
+  color: #F0E6D2;
+  font-family: "buttonFont";
+}
+
+::placeholder{
+  color: #8D8E8B;
+  font: "buttonFont";
+}
+
+.userInputButton{
+  height: 25px;
+  width: 100px;
+}
+
+.userInputButtonWide{
+  height: 25px;
+  width: 200px;
+}
+
+.userRegButton{
+  height: 25px;
+  width: 165px;
+}
+
+.rollButton{
+  height: 70px;
+  width: 400px;
+  border-radius: 5px;
+  font: 36px "buttonFont";
+}
+
+.rollButton2{
+  height: 40px;
+  width: 400px;
+  border-radius: 5px;
+  font: 28px "buttonFont";
+  margin-top: 10px;
+}
+
+.regReturnButton{
+  height: 50px;
+  width: 400px;
+  border-radius: 5px;
+  text-align: center;
+  font: 28px "buttonFont";
+  margin-top: 30px;
+}
+
+button{
+  background-color: #13181F;
+  border-style: solid;
+  border-color: #249490;
+  border-radius: 10px;
+  border-width: 1px;
+  color: #AEC4C6;
+  font: 16px "buttonFont";
+  text-align: center;
+}
+
+button:hover {
+  border-color: #B7D9E5;
+  background-color: #02577E;
+  transition: 0.1s;
+}
+
+#teamTable2{
+  /* position: absolute;
+  left: 120px;
+  top: 479px; */
+  border-top: 2px solid #000;
+  background-color: #00006688;
+}
+
+.container {
+  display: grid;
+  align-items: stretch; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5px;
+  width: 2200px;
+}
+
+.containerReg {
+  display: grid;
+  align-items: stretch; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5px;
+  width: 5500px;
+}
+
+.teamTableContainer {
+  display: grid;
+  align-items: center; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5px;
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.regContainer {
+  align-items: center; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5px;
+  width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.regReturnArea {
+  align-items: center; 
+  text-align: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5px;
+  width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.optionContainer {
+  display: grid;
+  align-items: center; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5px;
+  width: 200px;
+}
+
+.teamTable1Area{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.teamTable2Area{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.regTableArea{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.resultTableArea{
+  margin-left: auto;
+  margin-right: auto;
+  width: 400px;
+}
+
+.resultTableContainer {
+  display: grid;
+  align-items: center; 
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 5px;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.selectMode{
+  height: 23px;
+  color: #BEA985;
+  background-color: #13181F;
+  border: solid 1px #785A28;
+  font: 10pt "buttonFont";
+}
+
+.checkAreaCls{
+  display: grid;
+  background-color: #13181F88;
+  border: solid 1px #785A28;
+  width: 600px;
+  align-content: center;
+}
+
+.inputArea{
+  background-color: #13181F88;
+  border: solid 1px #785A28;
+  width: fit-content;
+  padding: 1%;
+  line-height: 10px;
+  text-align: center;
+}
+
+.regInputArea{
+  background-color: #13181F88;
+  border: solid 1px #785A28;
+  width: fit-content;
+  padding: 0.2%;
+  line-height: 10px;
+  text-align: center;
+  margin-left: 290px;
+}
+
+.inputArea2{
+  background-color: #13181F88;
+  border: solid 1px #785A28;
+  width: 400px;
+  padding: 1%;
+  margin-right: 10px;
+}
+
+.inputArea3{
+  background-color: #13181F88;
+  border: solid 1px #785A28;
+  width: 280px;
+  padding: 1%;
+  margin-right: 10px;
+}
+
+.modeArea{
+  background-color: #13181F88;
+  border: solid 1px #785A28;
+  width: fit-content;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-bottom: 1%;
+  margin-right: 50px;
+}
+
+#snackbarNormal {
+  text-shadow: 2px 2px #00000088;
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #336675aa;
+  border: solid 1px #2a4f5a;
+  color: #ede3ef;
+  text-align: center; /* Centered text */
+  border-radius: 3px; /* Rounded borders */
+  padding: 20px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  top: 30px; /* 30px from the top */
+  font: 17px "mainFont"
+}
+
+#snackbarNormal.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+#snackbarAlert {
+  text-shadow: 2px 2px #00000088;
+  visibility: hidden; /* Hidden by default. Visible on click */
+  min-width: 250px; /* Set a default minimum width */
+  margin-left: -125px; /* Divide value of min-width by 2 */
+  background-color: #753333aa;
+  border: solid 1px #502b2baa;
+  color: #ede3ef;
+  text-align: center; /* Centered text */
+  border-radius: 3px; /* Rounded borders */
+  padding: 20px; /* Padding */
+  position: fixed; /* Sit on top of the screen */
+  z-index: 1; /* Add a z-index if needed */
+  left: 50%; /* Center the snackbar */
+  top: 30px; /* 30px from the top */
+  font: 17px "mainFont"
+}
+
+#snackbarAlert.show {
+  visibility: visible; /* Show the snackbar */
+  /* Add animation: Take 0.5 seconds to fade in and out the snackbar.
+  However, delay the fade out process for 2.5 seconds */
+  -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+  animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+  from {top: 0; opacity: 0;}
+  to {top: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+  from {top: 30px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+  from {top: 30px; opacity: 1;}
+  to {top: 0; opacity: 0;}
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: max-content;         /* expands only as much as needed */
+  max-width: 420px;           /* optional, wrap if too long */
+  background-color: #000000cc;
+  font: 15px "mainFont";
+  color: #ffffff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px 10px;
+  position: absolute;
+  z-index: 1;
+
+  /* independent centering */
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  white-space: pre-line;        /* allow wrapping if long */
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #000000cc transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5); /* darkened overlay */
+  z-index: 999;
+  pointer-events: none;  /* ⬅ allows background interaction */
+}
+
+.popup-content {
+  background-color: #1b1b1b;
+  color: #EDE3CF;
+  padding: 20px 30px;
+  border-radius: 10px;
+  width: 60%;
+  max-height: 70%;
+  overflow-y: auto;
+  text-align: left;
+  pointer-events: all;   /* ⬅ makes only popup content clickable */
+}
+
+.popup-close-btn {
+  display: block;
+  margin: 15px auto 0;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 20px;
+  cursor: pointer;
+}
+.popup-close-btn:hover {
+  background: #45a049;
+}
+
+.close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.history-entry {
+  margin-bottom: 25px;
+  padding: 10px 15px;
+  background: #222;
+  border-radius: 10px;
+  border: 1px solid #555;
+}
+
+/* Table styling */
+.history-table {
+  border-collapse: collapse;
+  margin-top: 5px;
+  background-color: #1b1b1b;
+  color: #EDE3CF;
+  min-width: 200px;
+  border: 1px solid #777;   /* ✅ visible outline */
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.history-table caption {
+  color: #CEAD60;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.history-table th, .history-table td {
+  border-bottom: 1px solid #444;
+  padding: 6px 12px;
+  text-align: center;
+}
+
+.history-table th {
+  background-color: #2c2c2c;
+}
+
+.history-single {
+  display: flex;
+  justify-content: center;   /* ✅ center horizontally */
+  align-items: center;
+  margin-top: 10px;
+}
+
+/* Double-team layout: side-by-side */
+.history-double {
+  display: flex;            /* ✅ horizontal layout */
+  justify-content: space-evenly;
+  align-items: flex-start;
+  gap: 20px;                /* space between Team A & B */
+}
+
+/* Optional subtle color differences */
+.teamA {
+  border-color: #3a8ee6;
+}
+
+.teamB {
+  border-color: #e63a3a;
+}
+
+.tooltipGlobal {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  background-color: #000000cc;
+  font: 15px "mainFont";
+  color: #fff;
+  border-radius: 6px;
+  padding: 6px 10px;
+  text-align: center;
+  white-space: pre-line;
+  visibility: hidden;
+  transform: translate(-50%, -100%);
+}
+
+.tooltipGlobal::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #000000cc transparent transparent transparent;
+}
+
+#playerSelectionArea {  /* checkArea */
+  height: 160px;         /* Fixed display height */
+  overflow-y: auto;          /* Enables vertical scroll */
+  overflow-x: hidden;        /* Prevents horizontal scroll */
+  border: 1px solid #444;    /* Optional: visual border */
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #1b1b1bcc; /* Match your theme */
+  font: 22px "buttonFont";
+  text-align: center;
+  color: #EDE3CF;
+  text-shadow: 2px 2px #00000088;
+  position: relative;
+}
+
+/* Optional: custom scrollbar for dark theme */
+#playerSelectionArea::-webkit-scrollbar {
+  width: 8px;
+}
+
+#playerSelectionArea::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+#playerSelectionArea::-webkit-scrollbar-thumb:hover {
+  background-color: #777;
+}
+
+#customConfirmOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top of other content */
+}
+
+#customConfirmBox {
+  background-color: #010A13;
+  border: solid 1px #463714;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+#confirmMessage {
+  margin-bottom: 15px;
+  font: 22px "mainFont";
+  color: #ede3ef;
+  color: #ffffff;
+}
+
+#confirmYes, #confirmNo {
+  padding: 8px 15px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#confirmYes {
+  background-color: #443D2C; /* Green */
+  border: solid 1px #DEC48E;
+  color: white;
+}
+
+#confirmNo {
+  background-color: #1E2328; /* Red */
+  border: solid 1px #7B5D29;
+  color: white;
+}
