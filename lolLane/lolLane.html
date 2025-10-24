@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="resources/css/styles.css">
+    <link rel="icon" href="resources/img/icon.webp">
+    <meta charset="utf-8">
+    <title>팝콘티비 롤 라인 배정</title>
+  </head>
+  <body style='margin-left: 30px; background-image: url(resources/img/background3.png); height: 100vh; width: 100vw; background-repeat : no-repeat; background-size : cover;'>
+    <div class="container">
+      <div class="setupArea">
+        <h1 id="title">LoL 라인 배정 <span style="font: 15px 'titleFont';">(Ver 1.7)</span></h1>
+    
+        <p style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">플레이어 목록: </p>
+        <div id="playerSelectionArea" class="checkAreaCls"></div>
+        <!-- <div id="playerSelectionArea" class="checkAreaCls"><p id="checkArea"></p></div> -->
+    
+        <br>
+        <button class="userRegButton" type="button" onclick="registerTeamPlayers('teamA')" style="position:relative; left:50px;">레드팀에 등록 (R)</button> 
+        <button class="userRegButton" type="button" onclick="registerTeamPlayers('all')" style="position:relative; left:60px;">한 번에 등록 (A)</button>
+        <button class="userRegButton" type="button" onclick="registerTeamPlayers('teamB')" style="position:relative; left:70px;">블루팀에 등록 (B)</button>
+    
+        <button class="regReturnButton" type="button" onclick="gotoRegister()" style="position:relative; left:95px;">새로운 플레이어 등록하기</button> 
+    
+        <p style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088; margin-top: 0px">
+          <br>현재 참여 인원: <button id="resetTeamButton" class="userInputButton" type="button" onclick="resetTeamTable()">리셋</button><br>
+          <div class="teamTableContainer">
+            <div class="teamTable1Area">
+              <table id="teamTable1">
+                <thead>
+                  <tr>
+                    <th class="teamTable1Head">레드 팀</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="teamTable1Body" id="teamTable1_1">-</td>
+                  </tr>
+                  <tr>
+                    <td class="teamTable1Body" id="teamTable1_2">-</td>
+                  </tr>
+                  <tr>
+                    <td class="teamTable1Body" id="teamTable1_3">-</td>
+                  </tr>
+                  <tr>
+                    <td class="teamTable1Body" id="teamTable1_4">-</td>
+                  </tr>
+                  <tr>
+                    <td class="teamTable1Body" id="teamTable1_5">-</td>
+                  </tr>
+                </tbody>
+              </table>    
+            </div>
+            <div class="teamTable2Area">
+              <table id="teamTable2">
+                <thead>
+                  <tr>
+                    <th class="teamTable2Head">블루 팀</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="teamTable2Body" id="teamTable2_1">-</td>
+                  </tr>
+                  <tr>
+                    <td class="teamTable2Body" id="teamTable2_2">-</td>
+                  </tr>
+                  <tr>
+                    <td class="teamTable2Body" id="teamTable2_3">-</td>
+                  </tr>
+                  <tr>
+                    <td class="teamTable2Body" id="teamTable2_4">-</td>
+                  </tr>
+                  <tr>
+                    <td class="teamTable2Body" id="teamTable2_5">-</td>
+                  </tr>
+                </tbody>
+              </table>    
+            </div>
+          </div>
+        </p>
+        
+        <p style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+          모드 선택: 
+          <span class="modeArea">
+            <select name="mode" id="randMode" class="selectMode" onchange="resetResultTable(false)">
+              <optgroup label="5인 파티">
+                <option value="vs5_sel" id="vs5_sel" selected>[4-5인] 순차 선택</option>
+                <option value="vs5_ass" id="vs5_ass">[4-5인] 라인 할당</option>
+              </optgroup>
+              <optgroup label="내전 (완전 무작위)">
+                <option value="ran_sel_new" id="ran_sel_new">[무작위 내전] 순차 선택</option>
+                <option value="ran_ass_new" id="ran_ass_new">[무작위 내전] 라인 할당</option>
+              </optgroup>
+              <optgroup label="내전 (실력 보정)">
+                <option value="cal_sel_new" id="cal_sel_new">[실력 보정 내전] 순차 선택</option>
+                <option value="cal_ass_new" id="cal_ass_new">[실력 보정 내전] 라인 할당</option>
+              </optgroup>
+              <optgroup label="내전 (팀 유지)">
+                <option value="ran_sel_consv" id="ran_sel_consv">[팀 유지] 순차 선택</option>
+                <option value="ran_ass_consv" id="ran_ass_consv">[팀 유지] 라인 할당</option>
+              </optgroup>
+            </select> 
+          </span>
+          
+          배경 선택: 
+          <span class="modeArea">
+            <select name="bg" id="bgType" class="selectMode" onchange="changeBg()">
+              <option value="1" id="bg1">Type 1</option>
+              <option value="2" id="bg2">Type 2</option>
+              <option value="3" id="bg3">Type 3</option>
+              <option value="4" id="bg4">Type 4</option>
+              <option value="5" id="bg5">Type 5</option>
+              <option value="6" id="bg6">Type 6</option>
+            </select> 
+          </span>
+        </p>
+      </div>
+      <div class="resultDisplayArea">
+        <p id="result">라인 배정 현황 <small id="modeDisplay" style="font: 70px 'titleFont'; font-size: 25px;">(순차 선택)</small> 
+          <div class="resultTableContainer">
+            <div class="resultTableArea"><table id="resultTable1"></table></div>
+            <div class="resultTableArea"><table id="resultTable2" hidden></table></div>
+          </div>
+          <div>
+            <br><button class="rollButton" type="button" onclick="rollLine(false)">팀/라인 배정하기 (↲)</button>
+            <span class="inputArea" style="font: 16px 'buttonFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+              <span class="tooltip">클립보드에 자동으로 복사<span class="tooltiptext">팀/라인 배정 결과를 자동으로 클립보드에 복사합니다.</span></span><input id="autoCopy" type="checkbox" name="autoCopy" value="autoCopy" class="checkObj2" onclick="toggleAutoCopy()" checked="true"> 
+            </span>
+            <!-- <br><button id="ignoreLastRollButton" class="rollButton2" type="button" onclick="rollLine(true)">이전 결과를 무효로 하고 재배정</button> -->
+          </div>
+          <span style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088; margin-top: 80px;">&nbsp;
+            <div class="optionContainer">
+              <div class="inputArea2">
+                <p style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+                  <span class="tooltip">연속 라인 제한: <span class="tooltiptext">라인 할당 모드에서 연속으로 같은 라인에 할당되는 것을 제한합니다.</span></span>
+                  <span>
+                    <select name="consec" id="consec" class="selectMode" style="margin-right: 20px;">
+                      <option value="1" id="consec_1">1회</option>
+                      <option value="2" id="consec_2" selected>2회</option>
+                      <option value="3" id="consec_3">3회</option>
+                      <option value="4" id="consec_4">4회</option>
+                      <option value="5" id="consec_5">5회</option>
+                      <option value="2147483647" id="consec_max">비활성화</option>
+                    </select>  
+                  </span>
+                  <span class="inputArea" style="font: 16px 'buttonFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+                    <span class="tooltip">라인별 개별 보정<span class="tooltiptext">라인 할당 모드에서 연속으로 특정 라인에 할당되는 것을 제한합니다.<br>4/5인큐 모드에서만 적용됩니다.</span></span><input id="lineSpecif" type="checkbox" name="lineSpecif" value="lineSpecif" class="checkObj2" onclick="toggleLineSpecific()" checked="true"> 
+                  </span>
+                </p>
+                <p style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+                  <span class="tooltip">맞라인 보정: <span class="tooltiptext">실력 보정 내전에 적용되는 설정입니다.<br>라인 할당 모드에서 맞라인 상대방의 수준을 보정합니다.</span></span>
+                  <span>
+                    <select name="encControl" id="encControl" class="selectMode" style="margin-right: 21px;">
+                      <option value="0" id="enc_0">매우 민감 (최대)</option>
+                      <option value="1" id="enc_1">민감</option>
+                      <option value="2" id="enc_2">둔감</option>
+                      <option value="3" id="enc_3">매우 둔감</option>
+                      <option value="false" id="enc_false" selected>비활성화 (최소)</option>
+                    </select>  
+                  </span>  
+                  <span class="inputArea" style="font: 16px 'buttonFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+                    <span class="tooltip">라인별 점수 사용<span class="tooltiptext">실력 보정 내전에 적용되는 설정입니다.<br>라인 할당 모드에서 팀 구성 시 라인별 실력 점수를 사용합니다.<br>설정 해제 시 라인별 실력 점수의 평균을 사용합니다.</span></span><input id="lineScore" type="checkbox" name="lineScore" value="lineScore" class="checkObj2" checked="true"> 
+                  </span>
+                </p>
+                <p style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+                  <span class="tooltip">실력 보정 민감도: <span class="tooltiptext">실력 보정 내전에서 실력 보정의 정도를 결정합니다.</span></span>
+                  <select name="calSensitivity" id="calSensitivity" class="selectMode">
+                    <option value="0.05" id="cal_0">매우 민감 (최대)</option>
+                    <option value="0.1" id="cal_1" selected>민감</option>
+                    <option value="0.2" id="cal_2">약간 민감</option>
+                    <option value="0.3" id="cal_3">약간 둔감</option>
+                    <option value="0.4" id="cal_4">둔감</option>
+                    <option value="0.5" id="cal_5">매우 둔감 (최소)</option>
+                  </select>    
+                </p>
+                <p style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+                  <span class="tooltip">4 vs 4 / 4인큐 제외 라인: <span class="tooltiptext">4 vs 4 구도 또는 4인큐에서 제외할 라인을 결정합니다.</span></span>
+                  <select name="4v4banLine" id="4v4banLine" class="selectMode">
+                    <option value="TOP" id="4v4_noTOP">탑 (TOP)</option>
+                    <option value="JGL" id="4v4_noJGL">정글 (JGL)</option>
+                    <option value="MID" id="4v4_noMID">미드 (MID)</option>
+                    <option value="ADC" id="4v4_noADC">원딜 (ADC)</option>
+                    <option value="SPT" id="4v4_noSPT" selected>서포터 (SPT)</option>
+                    <option value="RAND" id="4v4_noRAND">무작위 라인</option>
+                  </select>    
+                </p>
+                <p style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+                  <span class="tooltip">라인 배정 로그 확인: <span class="tooltiptext">역대 라인 배정의 결과를 확인합니다.</span></span>
+                  <button class="userInputButton" type="button" onclick="displayLog()">로그 확인</button> 
+                </p>
+                <p style="font: 15px 'mainFont'; color: #EDE3CF; text-shadow: 1px 1px #00000088;">각 설정 항목에 마우스를 올려놓아 설명을 볼 수 있습니다.</p>
+              </div>
+              <div class="inputArea3" id= "lineSpecifBody" style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+                <p style="font:15px 'mainFont'">
+                  * 기존 "연속 라인 제한" 설정을 덮어씁니다.
+                </p>
+                <p> 탑 (TOP):
+                  <select name="consecSpec" id="consecSpec1" class="selectMode">
+                    <option value="1" id="consec_1">1</option>
+                    <option value="2" id="consec_2" selected>2</option>
+                    <option value="3" id="consec_3">3</option>
+                    <option value="4" id="consec_4">4</option>
+                    <option value="5" id="consec_5">5</option>
+                    <option value="2147483647" id="consec_max">비활성화</option>
+                  </select>  
+                </p>
+                <p> 정글 (JGL):
+                  <select name="consecSpec" id="consecSpec2" class="selectMode">
+                    <option value="1" id="consec_1">1</option>
+                    <option value="2" id="consec_2" selected>2</option>
+                    <option value="3" id="consec_3">3</option>
+                    <option value="4" id="consec_4">4</option>
+                    <option value="5" id="consec_5">5</option>
+                    <option value="2147483647" id="consec_max">비활성화</option>
+                  </select>  
+                </p>
+                <p> 미드 (MID):
+                  <select name="consecSpec" id="consecSpec3" class="selectMode">
+                    <option value="1" id="consec_1">1</option>
+                    <option value="2" id="consec_2" selected>2</option>
+                    <option value="3" id="consec_3">3</option>
+                    <option value="4" id="consec_4">4</option>
+                    <option value="5" id="consec_5">5</option>
+                    <option value="2147483647" id="consec_max">비활성화</option>
+                  </select>  
+                </p>
+                <p> 원딜 (ADC):
+                  <select name="consecSpec" id="consecSpec4" class="selectMode">
+                    <option value="1" id="consec_1">1</option>
+                    <option value="2" id="consec_2" selected>2</option>
+                    <option value="3" id="consec_3">3</option>
+                    <option value="4" id="consec_4">4</option>
+                    <option value="5" id="consec_5">5</option>
+                    <option value="2147483647" id="consec_max">비활성화</option>
+                  </select>  
+                </p>
+                <p> 서포터 (SPT):
+                  <select name="consecSpec" id="consecSpec5" class="selectMode">
+                    <option value="1" id="consec_1">1</option>
+                    <option value="2" id="consec_2" selected>2</option>
+                    <option value="3" id="consec_3">3</option>
+                    <option value="4" id="consec_4">4</option>
+                    <option value="5" id="consec_5">5</option>
+                    <option value="2147483647" id="consec_max">비활성화</option>
+                  </select>  
+                </p>
+              </div>  
+            </div>
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div id="snackbarNormal" style="white-space: pre-line">Snackbar Normal Message</div>
+    <div id="snackbarAlert" style="white-space: pre-line">Snackbar Alert Message</div>
+    <div id="customConfirmOverlay" style="display: none;">
+      <div id="customConfirmBox">
+        <p id="confirmMessage"></p>
+        <button id="confirmYes">Yes</button>
+        <button id="confirmNo">No</button>
+      </div>
+    </div>
+    <div id="laneHistoryPopup" class="popup" style="display: none;">
+      <div class="popup-content">
+        <span class="close" onclick="closeLaneHistory()">&times;</span>
+        <h2>라인 배정 로그</h2>
+        <div id="laneHistoryContent"></div>
+        <button class="popup-close-btn" onclick="closeLaneHistory()">확인</button>
+      </div>
+    </div>
+    <div id="globalTooltip" class="tooltipGlobal"></div>
+
+    <script src="resources/scripts/scriptMain.js"></script>
+
+  </body>
+</html>

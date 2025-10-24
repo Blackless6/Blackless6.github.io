@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" style="overflow-y: auto">
+  <head>
+    <link rel="stylesheet" href="../resources/css/styles.css">
+    <link rel="icon" href="../resources/img/icon.webp">
+    <meta charset="utf-8">
+    <title>플레이어 등록</title>
+  </head>
+  <body style='background-repeat: repeat; background-size: auto; overflow-y: auto'>
+    <h1 id="subtitle" style="margin-left: 30px;">플레이어 등록 / 관리</h1>
+    <div class="containerReg">
+      <div class="regSetupArea">
+
+        <!-- Registration form -->
+        <div class="regInputArea">
+          <p id="regArea">플레이어 등록하기</p>
+          
+          <input type="text" id="playerName" class="userInputBox" placeholder="이름 (최대 4글자)">
+          <input type="number" id="topSkill" class="userInputBoxMed" placeholder="탑 (0~100)" min="0" max="100">
+          <input type="number" id="jungleSkill" class="userInputBoxMed" placeholder="정글 (0~100)" min="0" max="100">
+          <input type="number" id="midSkill" class="userInputBoxMed" placeholder="미드 (0~100)" min="0" max="100">
+          <input type="number" id="adcSkill" class="userInputBoxMed" placeholder="원딜 (0~100)" min="0" max="100">
+          <input type="number" id="supportSkill" class="userInputBoxMed" placeholder="서폿 (0~100)" min="0" max="100">
+          <button class="userInputButton"  onclick="addPlayer()">등록 (↲)</button>
+
+          <button id="loadPresetButton" class="userInputButtonWide" type="button" onclick="loadDefaultPlayerList()">기본 프리셋 불러오기</button>
+          <button id="resetPlayerListButton" class="userInputButton" type="button" onclick="resetPlayerList()">리셋</button>
+        </div>
+
+        <!-- Players table -->
+        <div class="regContainer">
+          <table id="regTable">
+            <thead>
+              <tr>
+                <th class="regTableHead">이름</th>
+                <th class="regTableHead">탑</th>
+                <th class="regTableHead">정글</th>
+                <th class="regTableHead">미드</th>
+                <th class="regTableHead">원딜</th>
+                <th class="regTableHead">서폿</th>
+                <th class="regTableHead">작업</th>
+              </tr>
+            </thead>
+            <tbody id="playerTableBody" class="regTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- Return to main -->
+        <div class="regReturnArea">
+          <button class="regReturnButton" onclick="gotoMain()">메인으로 돌아가기</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="snackbarNormal" style="white-space: pre-line">Snackbar Normal Message</div>
+    <div id="snackbarAlert" style="white-space: pre-line">Snackbar Alert Message</div>
+    <div id="customConfirmOverlay" style="display: none;">
+      <div id="customConfirmBox">
+        <p id="confirmMessage"></p>
+        <button id="confirmYes">Yes</button>
+        <button id="confirmNo">No</button>
+      </div>
+    </div>
+
+    <script src="../resources/scripts/scriptRegister.js"></script>
+  </body>
+</html>
