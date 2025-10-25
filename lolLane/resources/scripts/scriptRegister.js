@@ -90,7 +90,6 @@ function savePlayers() {
 function addPlayer() {
   const name = document.getElementById("playerName").value.trim();
   if (!name) return snackbarAlertWarn("이름을 입력하세요.");
-  if (Object.keys(playerList).length >= 24) return snackbarAlertWarn("최대 24명의 플레이어만 등록할 수 있습니다.");
   if (name.length > 4) return snackbarAlertWarn("이름은 4글자 이내여야 합니다.");
   if (playerList[name]) return snackbarAlertWarn("이미 존재하는 이름입니다.");
 

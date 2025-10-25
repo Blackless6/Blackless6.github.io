@@ -116,13 +116,16 @@ function showCustomConfirm(message) {
 // document.getElementById('deleteButton').addEventListener('click', handleDelete);
 
 function regenerateButton(){
-  let resHTML = '<p style="margin-top: 0px; margin-bottom: 0px">';
+  let resHTML = '<div id="playerListWrapper">';
   for(let i = 0; i < playerList.length; i++){
     // resHTML += `<label class="playerLabel"><input id="check${i+1}" type="checkbox" name="check${i+1}" value="${playerList[i]}" class="checkObj"> ${playerList[i]} <small class="tooltip" style="color: #AAA; font-size: 15px;">${avg(playerListScoreForLane[playerList[i]])}<span class="tooltiptext">TOP: ${playerListScoreForLane[playerList[i]][0]}\nJGL: ${playerListScoreForLane[playerList[i]][1]}\nMID: ${playerListScoreForLane[playerList[i]][2]}\nADC: ${playerListScoreForLane[playerList[i]][3]}\nSPT: ${playerListScoreForLane[playerList[i]][4]}</span></small></label> `
+    // resHTML += `<label class="playerLabel"><input id="check${i+1}" type="checkbox" name="check${i+1}" value="${playerList[i]}" class="checkObj"> ${playerList[i]} <small class="tooltip" style="color: #AAA; font-size: 15px;" data-tooltip="TOP: ${playerListScoreForLane[playerList[i]][0]}\nJGL: ${playerListScoreForLane[playerList[i]][1]}\nMID: ${playerListScoreForLane[playerList[i]][2]}\nADC: ${playerListScoreForLane[playerList[i]][3]}\nSPT: ${playerListScoreForLane[playerList[i]][4]}">${avg(playerListScoreForLane[playerList[i]])}</small></label> `
     resHTML += `<label class="playerLabel"><input id="check${i+1}" type="checkbox" name="check${i+1}" value="${playerList[i]}" class="checkObj"> ${playerList[i]} <small class="tooltip" style="color: #AAA; font-size: 15px;" data-tooltip="TOP: ${playerListScoreForLane[playerList[i]][0]}\nJGL: ${playerListScoreForLane[playerList[i]][1]}\nMID: ${playerListScoreForLane[playerList[i]][2]}\nADC: ${playerListScoreForLane[playerList[i]][3]}\nSPT: ${playerListScoreForLane[playerList[i]][4]}">${avg(playerListScoreForLane[playerList[i]])}</small></label> `
-    if(i % 4 == 3 && i != playerList.length - 1){ resHTML += '<br>'; }
+    // if(window.innerWidth > 768){ if(i % 4 == 3 && i != playerList.length - 1){ resHTML += '<br>'; } }
+    // else if(window.innerWidth > 612){ if(i % 3 == 2 && i != playerList.length - 1){ resHTML += '<br>'; } }
+    // else{ if(i % 2 == 1 && i != playerList.length - 1){ resHTML += '<br>'; } }
   }
-  resHTML += '</p>';
+  resHTML += '</div>';
   document.getElementById("playerSelectionArea").innerHTML = resHTML;
 
   // Save data here.
@@ -1127,4 +1130,8 @@ document.addEventListener("keypress", (e) => {
   else if(e.code == 'KeyR'){ registerTeamPlayers('teamA'); }
   else if(e.code == 'KeyA'){ registerTeamPlayers('all'); }
   else if(e.code == 'KeyB'){ registerTeamPlayers('teamB'); }
+})
+
+window.addEventListener("resize", () => {
+  regenerateButton();
 })
