@@ -17,6 +17,7 @@ html, body {
   max-width: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
+  overscroll-behavior: contain;
 }
 
 #checkArea {
@@ -54,6 +55,15 @@ html, body {
 #result{
   font: 50px "titleFont";
   font-weight: bold;
+  background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+#modeDisplay{
+  font: 25px "titleFont";
+  font-weight: normal;
   background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
   background-clip: text;
   -webkit-background-clip: text;
@@ -309,7 +319,7 @@ html, body {
 }
 
 .userRegButton{
-  height: 25px;
+  min-height: 25px;
   width: 165px;
 }
 
@@ -329,7 +339,7 @@ html, body {
 }
 
 .regReturnButton{
-  height: 50px;
+  min-height: 50px;
   width: 400px;
   border-radius: 5px;
   text-align: center;
@@ -363,11 +373,24 @@ button:hover {
 }
 
 .container {
-  display: grid;
+  /* display: grid;
   align-items: stretch; 
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 5px;
-  width: 2200px;
+  width: 2200px; */
+  display: flex;
+  flex-direction: row;     /* horizontal by default */
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;               /* spacing between the two panels */
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.setupArea, .resultDisplayArea {
+  flex: 1 1 50%;
+  min-width: 750px;
 }
 
 .containerReg {
@@ -379,13 +402,14 @@ button:hover {
 }
 
 .teamTableContainer {
-  display: grid;
-  align-items: center; 
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   column-gap: 5px;
-  width: 400px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 300px;
+  margin-left: 145px;
+  padding-left: auto;
+  padding-right: auto;
 }
 
 .regContainer {
@@ -408,21 +432,10 @@ button:hover {
 }
 
 .optionContainer {
-  display: grid;
-  align-items: center; 
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  align-items: start; 
   column-gap: 5px;
-  width: 200px;
-}
-
-.teamTable1Area{
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.teamTable2Area{
-  margin-left: auto;
-  margin-right: auto;
+  width: auto;
 }
 
 .regTableArea{
@@ -437,13 +450,12 @@ button:hover {
 }
 
 .resultTableContainer {
-  display: grid;
-  align-items: center; 
-  grid-template-columns: 1fr 1fr 1fr;
-  column-gap: 5px;
-  width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: fit-content;
+  margin-left: 20px;
+  gap: 10px;
 }
 
 .selectMode{
@@ -465,7 +477,7 @@ button:hover {
 .inputArea{
   background-color: #13181F88;
   border: solid 1px #785A28;
-  width: fit-content;
+  width: 210px;
   padding: 1%;
   line-height: 10px;
   text-align: center;
@@ -498,13 +510,20 @@ button:hover {
 }
 
 .modeArea{
-  background-color: #13181F88;
-  border: solid 1px #785A28;
+  font: 18px 'titleFont';
+  color: #EDE3CF;
+  text-shadow: 2px 2px #00000088;
   width: fit-content;
-  padding-left: 1%;
-  padding-right: 1%;
-  padding-bottom: 1%;
+  padding: 1%;
   margin-right: 50px;
+}
+
+#allocButtonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 622px;
 }
 
 #snackbarNormal {
@@ -756,7 +775,27 @@ button:hover {
   border-color: #000000cc transparent transparent transparent;
 }
 
+/* Each tile remains simple */
+.playerLabel {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+/* Inner wrapper handles layout of player tiles */
+#playerListWrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px 8px;
+  align-items: start;
+  align-content: start;
+  box-sizing: border-box;
+}
+
 #playerSelectionArea {  /* checkArea */
+  display: block;
   height: 160px;         /* Fixed display height */
   overflow-y: auto;          /* Enables vertical scroll */
   overflow-x: hidden;        /* Prevents horizontal scroll */
@@ -832,4 +871,165 @@ button:hover {
   background-color: #1E2328; /* Red */
   border: solid 1px #7B5D29;
   color: white;
+}
+
+#option1Group{
+  flex-direction: row;
+  align-items: stretch;
+  width: auto;
+  max-width: 622px;
+  margin-right: 60px;
+  display: flex;
+  background-color: #13181F88;
+  border: solid 1px #785A28;
+}
+
+#option2Group{
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  display: flex;
+  margin-top: 1%;
+  gap: 12px;
+}
+
+@media (width <= 768px) {
+  html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: visible;
+    overscroll-behavior: contain;
+  }
+
+  .container {
+    flex-direction: column;   /* stack vertically */
+    align-items: stretch;     /* make them full width */
+    overflow-y: visible;
+  }
+
+  .setupArea, .resultDisplayArea {
+    width: 100%;              /* full width on mobile */
+    min-width: 0;             /* allow shrinkage */
+  }
+
+  .teamTableContainer {
+    display: flex;
+    align-items: center; 
+    grid-template-columns: 1fr 1fr;
+    column-gap: 5px;
+    width: auto;
+    margin-left: 0px;
+    margin-right: 60px;
+  }
+
+  .resultTableContainer {
+    margin-right: 20px;
+  }
+
+  .resultTableContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    margin-left: 0px;
+  }
+
+  .optionContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    column-gap: 5px;
+    width: auto;
+    margin-right: 40px;
+    gap: 12px;
+  }
+
+  #title{
+    font: 2.6rem "titleFont";
+    font-weight: bold;
+    background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  #result{
+    font: 2.2rem "titleFont";
+    font-weight: bold;
+    background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  #modeDisplay{
+    font: 1.2rem "titleFont";
+    font-weight: normal;
+    background: linear-gradient(to bottom, #EDE3CF 0%, #CEAD60 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  #allocButtonGroup{
+    flex-direction: row;
+    align-items: stretch;
+    width: auto;
+    margin-right: 60px;
+  }
+
+  #option1Group{
+    font: 25px 'titleFont';
+    color: #EDE3CF;
+    text-shadow: 2px 2px #00000088;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    max-width: none;
+    padding-top: 1%;
+    padding-bottom: 1%;
+  }
+
+  #option2Group{
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    margin-right: 60px;
+  }
+
+  #playerSelectionArea {  /* checkArea */
+    height: 160px;         /* Fixed display height */
+    overflow-y: auto;          /* Enables vertical scroll */
+    overflow-x: hidden;        /* Prevents horizontal scroll */
+    border: 1px solid #444;    /* Optional: visual border */
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #1b1b1bcc; /* Match your theme */
+    font: 22px "buttonFont";
+    text-align: center;
+    color: #EDE3CF;
+    text-shadow: 2px 2px #00000088;
+    position: relative;
+    width: auto;
+    margin-right: 60px;
+  }
+
+  #playerListWrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 8px;
+    align-items: start;
+    align-content: start;
+    box-sizing: border-box;
+  }
+
+  .checkAreaCls{
+    display: grid;
+    background-color: #13181F88;
+    border: solid 1px #785A28;
+    width: 300px;
+    align-content: center;
+  }
 }

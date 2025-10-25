@@ -1,0 +1,41 @@
+{
+  "name": "LoL 라인 배정기",
+  "short_name": "LoL 라인 배정",
+  "description": "오프라인에서도 사용할 수 있는 LoL 팀 구성 및 라인 배정 도우미",
+  "lang": "ko-KR",
+  "start_url": "lolLane.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#101820",
+  "id": "./lolLane.html",
+  "icons": [
+    {
+      "src": "resources/img/icon_small.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "resources/img/icon.webp",
+      "sizes": "2000x2000",
+      "type": "image/webp"
+    }
+  ],
+  "screenshots": [    
+    {
+      "src": "resources/img/sample1.gif",
+      "sizes": "1919x908",
+      "type": "image/gif",
+      "form_factor": "wide",
+      "label": "Application"
+    },
+    {
+      "src": "resources/img/sample2.gif",
+      "sizes": "367x820",
+      "type": "image/gif",
+      "label": "Application"
+    }
+  ]
+}

@@ -1,26 +1,49 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#101820">
+    <link rel="icon" href="resources/img/icon.webp" type="image/webp">
+
+    <!-- For iOS install prompt support -->
+    <link rel="apple-touch-icon" href="resources/img/icon.webp">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link rel="stylesheet" href="resources/css/styles.css">
     <link rel="icon" href="resources/img/icon.webp">
     <meta charset="utf-8">
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("resources/scripts/sw.js")
+            .then((reg) => console.log("Service Worker registered:", reg.scope))
+            .catch((err) => console.error("SW registration failed:", err));
+        });
+      }
+    </script>
     <title>팝콘티비 롤 라인 배정</title>
   </head>
-  <body style='margin-left: 30px; background-image: url(resources/img/background3.png); height: 100vh; width: 100vw; background-repeat : no-repeat; background-size : cover;'>
+  <body style='margin-left: 30px; background-image: url(resources/img/background3.png); height: 100vh; width: 100vw; background-repeat : repeat; background-size : cover; overflow-x: visible;'>
     <div class="container">
       <div class="setupArea">
-        <h1 id="title">LoL 라인 배정 <span style="font: 15px 'titleFont';">(Ver 1.7)</span></h1>
+        <h1 id="title">LoL 라인 배정 <span style="font: 15px 'titleFont';">(Ver 1.7.1)</span></h1>
     
         <p style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">플레이어 목록: </p>
         <div id="playerSelectionArea" class="checkAreaCls"></div>
         <!-- <div id="playerSelectionArea" class="checkAreaCls"><p id="checkArea"></p></div> -->
     
         <br>
-        <button class="userRegButton" type="button" onclick="registerTeamPlayers('teamA')" style="position:relative; left:50px;">레드팀에 등록 (R)</button> 
-        <button class="userRegButton" type="button" onclick="registerTeamPlayers('all')" style="position:relative; left:60px;">한 번에 등록 (A)</button>
-        <button class="userRegButton" type="button" onclick="registerTeamPlayers('teamB')" style="position:relative; left:70px;">블루팀에 등록 (B)</button>
+        <div id="allocButtonGroup">
+          <button class="userRegButton" type="button" onclick="registerTeamPlayers('teamA')">레드팀에 등록 (R)</button> 
+          <button class="userRegButton" type="button" onclick="registerTeamPlayers('all')">한 번에 등록 (A)</button>
+          <button class="userRegButton" type="button" onclick="registerTeamPlayers('teamB')">블루팀에 등록 (B)</button>
+        </div>
     
-        <button class="regReturnButton" type="button" onclick="gotoRegister()" style="position:relative; left:95px;">새로운 플레이어 등록하기</button> 
+        <div id="allocButtonGroup">
+          <button class="regReturnButton" type="button" onclick="gotoRegister()">새로운 플레이어 등록하기</button> 
+        </div>
     
         <p style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088; margin-top: 0px">
           <br>현재 참여 인원: <button id="resetTeamButton" class="userInputButton" type="button" onclick="resetTeamTable()">리셋</button><br>
@@ -79,10 +102,10 @@
             </div>
           </div>
         </p>
-        
-        <p style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
+
+        <div id="option1Group">
+          <div class="modeArea">
           모드 선택: 
-          <span class="modeArea">
             <select name="mode" id="randMode" class="selectMode" onchange="resetResultTable(false)">
               <optgroup label="5인 파티">
                 <option value="vs5_sel" id="vs5_sel" selected>[4-5인] 순차 선택</option>
@@ -101,10 +124,10 @@
                 <option value="ran_ass_consv" id="ran_ass_consv">[팀 유지] 라인 할당</option>
               </optgroup>
             </select> 
-          </span>
+          </div>
           
+          <div class="modeArea">
           배경 선택: 
-          <span class="modeArea">
             <select name="bg" id="bgType" class="selectMode" onchange="changeBg()">
               <option value="1" id="bg1">Type 1</option>
               <option value="2" id="bg2">Type 2</option>
@@ -113,23 +136,23 @@
               <option value="5" id="bg5">Type 5</option>
               <option value="6" id="bg6">Type 6</option>
             </select> 
-          </span>
-        </p>
+          </div>
+        </div>
       </div>
       <div class="resultDisplayArea">
-        <p id="result">라인 배정 현황 <small id="modeDisplay" style="font: 70px 'titleFont'; font-size: 25px;">(순차 선택)</small> 
+        <p id="result">라인 배정 현황 <small id="modeDisplay">(순차 선택)</small> 
           <div class="resultTableContainer">
             <div class="resultTableArea"><table id="resultTable1"></table></div>
             <div class="resultTableArea"><table id="resultTable2" hidden></table></div>
           </div>
-          <div>
-            <br><button class="rollButton" type="button" onclick="rollLine(false)">팀/라인 배정하기 (↲)</button>
+          <div id="option2Group">
+            <button class="rollButton" type="button" onclick="rollLine(false)">팀/라인 배정하기 (↲)</button>
             <span class="inputArea" style="font: 16px 'buttonFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
               <span class="tooltip">클립보드에 자동으로 복사<span class="tooltiptext">팀/라인 배정 결과를 자동으로 클립보드에 복사합니다.</span></span><input id="autoCopy" type="checkbox" name="autoCopy" value="autoCopy" class="checkObj2" onclick="toggleAutoCopy()" checked="true"> 
             </span>
             <!-- <br><button id="ignoreLastRollButton" class="rollButton2" type="button" onclick="rollLine(true)">이전 결과를 무효로 하고 재배정</button> -->
           </div>
-          <span style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088; margin-top: 80px;">&nbsp;
+          <div id="option3Group">&nbsp;
             <div class="optionContainer">
               <div class="inputArea2">
                 <p style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
@@ -145,7 +168,7 @@
                     </select>  
                   </span>
                   <span class="inputArea" style="font: 16px 'buttonFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
-                    <span class="tooltip">라인별 개별 보정<span class="tooltiptext">라인 할당 모드에서 연속으로 특정 라인에 할당되는 것을 제한합니다.<br>4/5인큐 모드에서만 적용됩니다.</span></span><input id="lineSpecif" type="checkbox" name="lineSpecif" value="lineSpecif" class="checkObj2" onclick="toggleLineSpecific()" checked="true"> 
+                    <span class="tooltip">라인별 개별 보정<span class="tooltiptext">라인 할당 모드에서 연속으로 특정 라인에 할당되는 것을 제한합니다.<br>4/5인큐 모드에서만 적용됩니다.<br>해당 설정 적용 시 기존의 설정을 덮어씌웁니다.</span></span><input id="lineSpecif" type="checkbox" name="lineSpecif" value="lineSpecif" class="checkObj2" onclick="toggleLineSpecific()" checked="true"> 
                   </span>
                 </p>
                 <p style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
@@ -192,8 +215,8 @@
                 <p style="font: 15px 'mainFont'; color: #EDE3CF; text-shadow: 1px 1px #00000088;">각 설정 항목에 마우스를 올려놓아 설명을 볼 수 있습니다.</p>
               </div>
               <div class="inputArea3" id= "lineSpecifBody" style="font: 18px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">
-                <p style="font:15px 'mainFont'">
-                  * 기존 "연속 라인 제한" 설정을 덮어씁니다.
+                <p style="font:22px 'mainFont'; font-weight: bold;">
+                  라인별 개별 보정 설정
                 </p>
                 <p> 탑 (TOP):
                   <select name="consecSpec" id="consecSpec1" class="selectMode">
@@ -247,7 +270,7 @@
                 </p>
               </div>  
             </div>
-          </span>
+          </div>
         </p>
       </div>
     </div>
