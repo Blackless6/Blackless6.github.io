@@ -7,7 +7,7 @@
 
     <!-- For iOS install prompt support -->
     <link rel="apple-touch-icon" href="resources/img/icon.webp">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link rel="stylesheet" href="resources/css/styles.css">
@@ -28,7 +28,7 @@
   <body style='margin-left: 30px; background-image: url(resources/img/background3.png); height: 100vh; width: 100vw; background-repeat : repeat; background-size : cover; overflow-x: visible;'>
     <div class="container">
       <div class="setupArea">
-        <h1 id="title">LoL 라인 배정 <span style="font: 15px 'titleFont';">(Ver 1.7.1)</span></h1>
+        <h1 id="title">LoL 라인 배정 <span style="font: 15px 'titleFont';">(Ver 2.0.0)</span></h1>
     
         <p style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088;">플레이어 목록: </p>
         <div id="playerSelectionArea" class="checkAreaCls"></div>
@@ -46,7 +46,8 @@
         </div>
     
         <p style="font: 25px 'titleFont'; color: #EDE3CF; text-shadow: 2px 2px #00000088; margin-top: 0px">
-          <br>현재 참여 인원: <button id="resetTeamButton" class="userInputButton" type="button" onclick="resetTeamTable()">리셋</button><br>
+          <br>현재 참여 인원: <button id="resetTeamButton" class="userInputButton" type="button" onclick="resetTeamTable()">리셋</button>
+          <button id="autoDetectButton" class="userInputButtonWide" type="button" onclick="handleAutoDetect()">플레이어 자동 감지</button><br>
           <div class="teamTableContainer">
             <div class="teamTable1Area">
               <table id="teamTable1">

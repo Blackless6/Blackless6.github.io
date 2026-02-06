@@ -7,22 +7,11 @@ var diffListLog;
 var allCombInScoreLog;
 var allCombInNameLog;
 
-var playerListScoreForLaneOrig = {
-  '안윤수': [50, 53, 60, 57, 50],
-  '정민재': [34, 48, 50, 33, 46],
-  '홍현기': [34, 38, 50, 43, 46],
-  '김진서': [65, 20, 46, 40, 40],
-  '전진우': [34, 38, 42, 50, 48],
-  '이태규': [64, 64, 64, 64, 64], // 64
-  '김지환': [65, 55, 70, 70, 65], // 09
-  '고현승': [30, 30, 45, 40, 30],
-  '정상엽': [75, 80, 80, 73, 75],
-  '정민혁': [45, 40, 40, 33, 45], // Cutie
-  '이진서': [55, 50, 54, 50, 45],
-  '조영석': [16, 10, 15, 15, 20],
+const pl = JSON.parse(localStorage.getItem('playerList'));
+var playerListScoreForLane = {};
+for(b of pl){
+  playerListScoreForLane[b.name] = b.scores;
 }
-
-var playerListScoreForLane = JSON.parse(localStorage.getItem('playerList'))
 
 var playerListScore = JSON.parse(JSON.stringify(playerListScoreForLane)); // Deep copy
 
@@ -46,6 +35,14 @@ const BACKGROUND_NUMBER = 6;
 // ************* //
 // * Functions * //
 // ************* //
+
+function isElectron(){
+  return !!(
+    window.electronAPI ||
+    window.process?.type ||
+    navigator.userAgent.toLowerCase().includes('electron')
+  );
+}
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -117,19 +114,16 @@ function showCustomConfirm(message) {
 
 function regenerateButton(){
   let resHTML = '<div id="playerListWrapper">';
-  for(let i = 0; i < playerList.length; i++){
+  for(let i = 0; i < pl.length; i++){
     // resHTML += `<label class="playerLabel"><input id="check${i+1}" type="checkbox" name="check${i+1}" value="${playerList[i]}" class="checkObj"> ${playerList[i]} <small class="tooltip" style="color: #AAA; font-size: 15px;">${avg(playerListScoreForLane[playerList[i]])}<span class="tooltiptext">TOP: ${playerListScoreForLane[playerList[i]][0]}\nJGL: ${playerListScoreForLane[playerList[i]][1]}\nMID: ${playerListScoreForLane[playerList[i]][2]}\nADC: ${playerListScoreForLane[playerList[i]][3]}\nSPT: ${playerListScoreForLane[playerList[i]][4]}</span></small></label> `
     // resHTML += `<label class="playerLabel"><input id="check${i+1}" type="checkbox" name="check${i+1}" value="${playerList[i]}" class="checkObj"> ${playerList[i]} <small class="tooltip" style="color: #AAA; font-size: 15px;" data-tooltip="TOP: ${playerListScoreForLane[playerList[i]][0]}\nJGL: ${playerListScoreForLane[playerList[i]][1]}\nMID: ${playerListScoreForLane[playerList[i]][2]}\nADC: ${playerListScoreForLane[playerList[i]][3]}\nSPT: ${playerListScoreForLane[playerList[i]][4]}">${avg(playerListScoreForLane[playerList[i]])}</small></label> `
-    resHTML += `<label class="playerLabel"><input id="check${i+1}" type="checkbox" name="check${i+1}" value="${playerList[i]}" class="checkObj"> ${playerList[i]} <small class="tooltip" style="color: #AAA; font-size: 15px;" data-tooltip="TOP: ${playerListScoreForLane[playerList[i]][0]}\nJGL: ${playerListScoreForLane[playerList[i]][1]}\nMID: ${playerListScoreForLane[playerList[i]][2]}\nADC: ${playerListScoreForLane[playerList[i]][3]}\nSPT: ${playerListScoreForLane[playerList[i]][4]}">${avg(playerListScoreForLane[playerList[i]])}</small></label> `
+    resHTML += `<label class="playerLabel"><input id="check${i+1}" type="checkbox" name="check${i+1}" value="${pl[i].name}" class="checkObj"> ${pl[i].name} <small class="tooltip" style="color: #AAA; font-size: 15px;" data-tooltip="TOP: ${pl[i].scores[0]}\nJGL: ${pl[i].scores[1]}\nMID: ${pl[i].scores[2]}\nADC: ${pl[i].scores[3]}\nSPT: ${pl[i].scores[4]}">${avg(pl[i].scores)}</small></label> `
     // if(window.innerWidth > 768){ if(i % 4 == 3 && i != playerList.length - 1){ resHTML += '<br>'; } }
     // else if(window.innerWidth > 612){ if(i % 3 == 2 && i != playerList.length - 1){ resHTML += '<br>'; } }
     // else{ if(i % 2 == 1 && i != playerList.length - 1){ resHTML += '<br>'; } }
   }
   resHTML += '</div>';
   document.getElementById("playerSelectionArea").innerHTML = resHTML;
-
-  // Save data here.
-  localStorage.setItem('playerList', JSON.stringify(playerListScoreForLane))
 }
 
 function resetResultTable(isInit){
@@ -1088,6 +1082,87 @@ function changeBg(){
 function gotoRegister(){
   window.location.href = "util/register.html";
 }
+
+function handleAutoDetect(){
+  if(isElectron()){
+    performAutoDetect();
+  } else{
+    redirectElectronDownload();
+  }
+}
+
+function redirectElectronDownload() {
+  // Prevent duplicate popups
+  if (document.getElementById("electronDownloadModal")) return;
+
+  // Overlay
+  const overlay = document.createElement("div");
+  overlay.id = "electronDownloadModal";
+  overlay.style.position = "fixed";
+  overlay.style.top = "0";
+  overlay.style.left = "0";
+  overlay.style.width = "100%";
+  overlay.style.height = "100%";
+  overlay.style.backgroundColor = "rgba(0,0,0,0.6)";
+  overlay.style.display = "flex";
+  overlay.style.justifyContent = "center";
+  overlay.style.alignItems = "center";
+  overlay.style.zIndex = "9999";
+
+  // Modal box
+  const modal = document.createElement("div");
+  modal.style.background = "#1f1f1f";
+  modal.style.padding = "24px";
+  modal.style.borderRadius = "12px";
+  modal.style.width = "320px";
+  modal.style.textAlign = "center";
+  modal.style.color = "#EDE3CF";
+  modal.style.boxShadow = "0 0 20px rgba(0,0,0,0.5)";
+
+  // Title
+  const title = document.createElement("h3");
+  title.innerText = "네이티브 앱 필요";
+  title.style.marginTop = "0";
+
+  // Description
+  const desc = document.createElement("p");
+  desc.innerText =
+    "자동 감지 기능은 Electron 네이티브 앱에서만 사용할 수 있습니다.";
+
+  // Download button
+  const downloadBtn = document.createElement("button");
+  downloadBtn.innerText = "앱 다운로드";
+  downloadBtn.className = "userInputButton";
+  downloadBtn.style.marginRight = "10px";
+  downloadBtn.onclick = () => {
+    // TODO: replace with your real download URL
+    window.open("https://your-electron-download-page.example", "_blank");
+  };
+
+  // Close button
+  const closeBtn = document.createElement("button");
+  closeBtn.innerText = "닫기";
+  closeBtn.className = "userInputButton";
+  closeBtn.onclick = () => {
+    document.body.removeChild(overlay);
+  };
+
+  // Assemble
+  modal.appendChild(title);
+  modal.appendChild(desc);
+  modal.appendChild(downloadBtn);
+  modal.appendChild(closeBtn);
+  overlay.appendChild(modal);
+  document.body.appendChild(overlay);
+
+  // Click outside modal to close
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) {
+      document.body.removeChild(overlay);
+    }
+  });
+}
+
 
 // ******** //
 // * Main * //

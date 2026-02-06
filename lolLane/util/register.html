@@ -21,10 +21,27 @@
           <input type="number" id="midSkill" class="userInputBoxMed" placeholder="미드 (0~100)" min="0" max="100">
           <input type="number" id="adcSkill" class="userInputBoxMed" placeholder="원딜 (0~100)" min="0" max="100">
           <input type="number" id="supportSkill" class="userInputBoxMed" placeholder="서폿 (0~100)" min="0" max="100">
-          <button class="userInputButton"  onclick="addPlayer()">등록 (↲)</button>
 
-          <button id="loadPresetButton" class="userInputButtonWide" type="button" onclick="loadDefaultPlayerList()">기본 프리셋 불러오기</button>
-          <button id="resetPlayerListButton" class="userInputButton" type="button" onclick="resetPlayerList()">리셋</button>
+          <div class="regLoLIDArea">
+            <p id="regLoLIDArea" style="margin-top:10px;">LoL ID (최대 3개, 선택)</p>
+            <input type="text" id="lolID1" class="userInputBoxID" placeholder="소환사ID1#Tag">
+            <input type="text" id="lolID2" class="userInputBoxID" placeholder="소환사ID2#Tag">
+            <input type="text" id="lolID3" class="userInputBoxID" placeholder="소환사ID3#Tag">
+          </div>
+          
+          <div class="regButtonArea">
+            <button class="userInputButton" onclick="addPlayer()">등록 (↲)</button>
+            <button id="resetPlayerListButton" class="userInputButton" type="button" onclick="resetPlayerList()">리셋</button>
+          </div>
+        </div>
+
+        <!-- Preset save/load -->
+        <div class="presetArea">
+          <p id="regArea">플레이어 프리셋 등록/공유</p>
+          
+          <input type="textarea" id="presetCode" class="userInputBoxLarge" placeholder="플레이어 프리셋 코드">
+          <button id="loadPresetButton" class="userInputButton"  onclick="loadPlayerPresetCode()">불러오기</button>
+          <button id="sharePresetButton" class="userInputButton" onclick="copyPlayerPreset()">프리셋 공유</button>
         </div>
 
         <!-- Players table -->
@@ -38,6 +55,9 @@
                 <th class="regTableHead">미드</th>
                 <th class="regTableHead">원딜</th>
                 <th class="regTableHead">서폿</th>
+                <th class="regTableHead">LoL ID #1</th>
+                <th class="regTableHead">LoL ID #2</th>
+                <th class="regTableHead">LoL ID #3</th>
                 <th class="regTableHead">작업</th>
               </tr>
             </thead>
