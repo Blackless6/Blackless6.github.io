@@ -1168,10 +1168,7 @@ async function performAutoDetect() {
     const detectedPlayers =
       await window.electronAPI.autoDetectPlayers();
 
-    // Expected format example:
-    // [
-    //   { name: "홍현기", scores:[0,0,0,0,0], lolIDs:["abc"] }
-    // ]
+    console.log(detectedPlayers);
 
     if (!detectedPlayers ||
         detectedPlayers.length === 0) {
@@ -1183,37 +1180,39 @@ async function performAutoDetect() {
       return;
     }
 
-    registeredPlayerList = {
-      teamA: [], teamB: []
-    };
+    const rollMode = document.getElementById("randMode").value;
+    let playerCap;
+    if(rollMode.startsWith('vs5')){ playerCap = 5; } else { playerCap = 10; }
+    let resPlayers = [];
+    let success_count = 0;
 
-    detectedPlayers.forEach(p => {
-      // Avoid duplicates
-      const exists = playerList.find(
-        x => x.name === p.name
-      );
-
-      if (!exists) {
-        playerList.push({
-          name: p.name,
-          scores: p.scores || [50,50,50,50,50],
-          lolIDs: p.lolIDs || []
-        });
+    for(ri of detectedPlayers){
+      for(b of pl){
+        if(resPlayers.length >= playerCap) break;
+        if(b.LoLIDs.indexOf(ri) != -1){
+          resPlayers.push(b.name);
+          success_count += 1; break;
+        }
       }
-    });
+    }
 
-    // 6️⃣ Persist + refresh UI
-    localStorage.setItem(
-      "playerList",
-      JSON.stringify(playerList)
-    );
+    let fail_count = detectedPlayers.length - success_count;
 
-    renderPlayers();
-    regenerateButton();
+    // Reset
+    if(success_count != 0)
+      registeredPlayerList = {
+        teamA: [], teamB: []
+      };
 
-    snackbarAlertNormal(
-      `${detectedPlayers.length}명의 플레이어를 추가했습니다.`
-    );
+    if(fail_count == 0){
+      snackbarAlertNormal(
+        `${success_count}명의 플레이어를 추가했습니다.`
+      );
+    } else{
+      snackbarAlertWarn(
+        `${success_count}명의 플레이어를 추가했습니다.\n${fail_count}명의 플레이어 추가에 실패했습니다. 플레이어의 Riot ID를 확인해주세요.`
+      );
+    }
 
   } catch (err) {
     console.error(err);
