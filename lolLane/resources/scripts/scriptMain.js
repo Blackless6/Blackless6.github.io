@@ -243,10 +243,57 @@ function registerTeamPlayers(registerAt){
 }
 
 function updateTeamTable(){
-  for(let i = 0; i < 5; i++){
-    document.getElementById(`teamTable1_${i+1}`).innerHTML = (typeof registeredPlayerList.teamA[i] == 'undefined') ? '-' : registeredPlayerList.teamA[i];
-    document.getElementById(`teamTable2_${i+1}`).innerHTML = (typeof registeredPlayerList.teamB[i] == 'undefined') ? '-' : registeredPlayerList.teamB[i];
+  // for(let i = 0; i < 5; i++){
+  //   document.getElementById(`teamTable1_${i+1}`).innerHTML = (typeof registeredPlayerList.teamA[i] == 'undefined') ? '-' : registeredPlayerList.teamA[i];
+  //   document.getElementById(`teamTable2_${i+1}`).innerHTML = (typeof registeredPlayerList.teamB[i] == 'undefined') ? '-' : registeredPlayerList.teamB[i];
+  // }
+  for(let i = 0; i < 5; i++) {
+    const redCell = document.getElementById(`teamTable1_${i+1}`);
+    const blueCell = document.getElementById(`teamTable2_${i+1}`);
+
+    const redName = registeredPlayerList.teamA[i] || "-";
+    const blueName = registeredPlayerList.teamB[i] || "-";
+
+    redCell.innerText = redName;
+    blueCell.innerText = blueName;
+
+    // remove previous handlers
+    redCell.onclick = null;
+    blueCell.onclick = null;
+
+    // add delete handler if occupied
+    if (redName !== "-") {
+      redCell.style.cursor = "pointer";
+
+      redCell.onclick = () => {
+        removePlayerFromTeam("red", i);
+      };
+    } else {
+      redCell.style.cursor = "default";
+    }
+
+    if (blueName !== "-") {
+      blueCell.style.cursor = "pointer";
+
+      blueCell.onclick = () => {
+        removePlayerFromTeam("blue", i);
+      };
+    } else {
+      blueCell.style.cursor = "default";
+    }
   }
+}
+
+function removePlayerFromTeam(team, index) {
+  if (team === "red") {
+    registeredPlayerList.teamA.splice(index, 1);
+  }
+
+  if (team === "blue") {
+    registeredPlayerList.teamB.splice(index, 1);
+  }
+
+  updateTeamTable();
 }
 
 async function resetTeamTable(){
