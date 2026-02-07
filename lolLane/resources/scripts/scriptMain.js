@@ -1176,7 +1176,7 @@ async function performAutoDetect() {
     if (!detectedPlayers ||
         detectedPlayers.length === 0) {
 
-      showSnackbarAlert(
+      snackbarAlertWarn(
         "감지된 플레이어가 없습니다.\n" +
         "LoL 클라이언트가 실행 중인지 확인하세요."
       );
@@ -1211,14 +1211,14 @@ async function performAutoDetect() {
     renderPlayers();
     regenerateButton();
 
-    showSnackbarNormal(
+    snackbarAlertNormal(
       `${detectedPlayers.length}명의 플레이어를 추가했습니다.`
     );
 
   } catch (err) {
     console.error(err);
 
-    showSnackbarAlert(
+    snackbarAlertWarn(
       "자동 감지 중 오류 발생\n" +
       "LoL 클라이언트를 확인하세요."
     );
