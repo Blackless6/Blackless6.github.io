@@ -1163,6 +1163,67 @@ function redirectElectronDownload() {
   });
 }
 
+async function performAutoDetect() {
+  try {
+    const detectedPlayers =
+      await window.electronAPI.autoDetectPlayers();
+
+    // Expected format example:
+    // [
+    //   { name: "홍현기", scores:[0,0,0,0,0], lolIDs:["abc"] }
+    // ]
+
+    if (!detectedPlayers ||
+        detectedPlayers.length === 0) {
+
+      showSnackbarAlert(
+        "감지된 플레이어가 없습니다.\n" +
+        "LoL 클라이언트가 실행 중인지 확인하세요."
+      );
+      return;
+    }
+
+    registeredPlayerList = {
+      teamA: [], teamB: []
+    };
+
+    detectedPlayers.forEach(p => {
+      // Avoid duplicates
+      const exists = playerList.find(
+        x => x.name === p.name
+      );
+
+      if (!exists) {
+        playerList.push({
+          name: p.name,
+          scores: p.scores || [50,50,50,50,50],
+          lolIDs: p.lolIDs || []
+        });
+      }
+    });
+
+    // 6️⃣ Persist + refresh UI
+    localStorage.setItem(
+      "playerList",
+      JSON.stringify(playerList)
+    );
+
+    renderPlayers();
+    regenerateButton();
+
+    showSnackbarNormal(
+      `${detectedPlayers.length}명의 플레이어를 추가했습니다.`
+    );
+
+  } catch (err) {
+    console.error(err);
+
+    showSnackbarAlert(
+      "자동 감지 중 오류 발생\n" +
+      "LoL 클라이언트를 확인하세요."
+    );
+  }
+}
 
 // ******** //
 // * Main * //
