@@ -1199,10 +1199,24 @@ async function performAutoDetect() {
     let fail_count = detectedPlayers.length - success_count;
 
     // Reset
-    if(success_count != 0)
+    if(success_count != 0){
       registeredPlayerList = {
         teamA: [], teamB: []
       };
+
+      if(success_count <= 5){
+        for(var i = 0; i < success_count; i++){
+          registeredPlayerList.teamA.push(resPlayers[i]);
+        }
+      } else{
+        for(var i = 0; i < success_count; i += 2){
+          registeredPlayerList.teamA.push(resPlayers[i]);
+          if(i+1 != success_count) registeredPlayerList.teamB.push(resPlayers[i+1]);
+        }
+      }
+
+      updateTeamTable();
+    }
 
     if(fail_count == 0){
       snackbarAlertNormal(
