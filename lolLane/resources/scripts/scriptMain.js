@@ -1182,8 +1182,7 @@ function redirectElectronDownload() {
   downloadBtn.className = "userInputButton";
   downloadBtn.style.marginRight = "10px";
   downloadBtn.onclick = () => {
-    // TODO: replace with your real download URL
-    window.open("https://your-electron-download-page.example", "_blank");
+    window.open("https://github.com/Blackless6/Blackless6.github.io/releases/tag/v2.0.0", "_blank");
   };
 
   // Close button
