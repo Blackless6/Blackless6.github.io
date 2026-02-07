@@ -7,7 +7,7 @@ var diffListLog;
 var allCombInScoreLog;
 var allCombInNameLog;
 
-const pl = JSON.parse(localStorage.getItem('playerList'));
+const pl = JSON.parse(localStorage.getItem("playerList")) || [];
 var playerListScoreForLane = {};
 for(b of pl){
   playerListScoreForLane[b.name] = b.scores;
