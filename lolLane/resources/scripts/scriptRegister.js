@@ -5,14 +5,18 @@ const MAX_NAME_LEN = 4;
 const MAX_ID_LEN = 32;
 const LANES = 5;
 
+const defaultPreset = "AgsJ6rOg7ZiE7Iq5FSUjRBwACeq5gOyngO2ZmFVNW109AAnquYDsp4TshJxOGSApGQAJ7JWI7Jyk7IiYRVVVTkgACeyehOyEuOyZhDcpQUEtAAnsnbTtg5zqt5xOQ0hIMgAJ7KCE7KeE7JqwJSwxTCMACeygleuvvOyerC0yMi0yAAnsoJXrr7ztmIEsICspHQAJ7KCV7IOB7Je9RVhSRTgACe2Zje2YhOq4sBIiHDdLAFhiiOE";
+
 // Load existing player list from localStorage
 let playerList = JSON.parse(localStorage.getItem("playerList")) || [];
 
-var snackbarIn = false;
-var snackbarAlertIn = false;
-var snackbarZ = 1;
+let snackbarIn = false;
+let snackbarAlertIn = false;
+let snackbarZ = 1;
 
-var listener_max = -1;
+let listener_max = -1;
+
+let confirmOpen = false;
 
 function snackbarAlertNormal(msg) {
   var x = document.getElementById("snackbarNormal");
@@ -38,15 +42,19 @@ function snackbarAlertWarn(msg) {
 
 function showCustomConfirm(message) {
   return new Promise((resolve) => {
+    confirmOpen = true;
+
     document.getElementById('confirmMessage').textContent = message;
     document.getElementById('customConfirmOverlay').style.display = 'flex';
 
     document.getElementById('confirmYes').onclick = () => {
+      confirmOpen = false;
       document.getElementById('customConfirmOverlay').style.display = 'none';
       resolve(true); // User clicked Yes
     };
 
     document.getElementById('confirmNo').onclick = () => {
+      confirmOpen = false;
       document.getElementById('customConfirmOverlay').style.display = 'none';
       resolve(false); // User clicked No
     };
@@ -473,7 +481,7 @@ async function loadPlayerPresetCode(){
   const confirmed = await showCustomConfirm("플레이어 프리셋을 불러올 경우 기존 플레이어 목록은 덮어씌워집니다. 계속하시겠습니까?");
   if(!confirmed) return;
 
-  const ppCode = document.getElementById(`presetCode`).value;
+  const ppCode = document.getElementById(`presetCode`).value || defaultPreset;
 
   // Decoding part
   let tryplist;
@@ -487,7 +495,11 @@ async function loadPlayerPresetCode(){
   savePlayers();
 
   document.getElementById("presetCode").value = "";
-  snackbarAlertNormal('플레이어 프리셋을 불러왔습니다.');
+  if(ppCode == defaultPreset){
+    snackbarAlertNormal('프리셋 코드를 입력하지 않아 기본 프리셋을 불러왔습니다.');
+  } else{
+    snackbarAlertNormal('플레이어 프리셋을 불러왔습니다.');
+  }
 }
 
 function copyPlayerPreset(){
@@ -512,9 +524,14 @@ document.getElementById('loadPresetButton').addEventListener('click', loadPlayer
 document.getElementById('sharePresetButton').addEventListener('click', copyPlayerPreset);
 document.getElementById('resetPlayerListButton').addEventListener('click', resetPlayerList);
 
-document.addEventListener("keypress", (e) => {
+document.addEventListener("keydown", (e) => {
   if(e.code == 'Enter'){
     e.preventDefault();
-    if(document.getElementById("customConfirmOverlay").style.display != "flex"){ addPlayer(); }
+    // if(document.getElementById("customConfirmOverlay").style.display != "flex"){ addPlayer(); }
+    if(confirmOpen){ document.getElementById('confirmYes').click(); }
+    else{ addPlayer(); }
+  }
+  else if(e.code == 'Escape'){
+    if(confirmOpen){ document.getElementById('confirmNo').click(); }
   }
 })

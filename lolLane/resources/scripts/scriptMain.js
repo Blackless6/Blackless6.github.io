@@ -2,32 +2,34 @@
 // * Constants * //
 // ************* //
 
-var resLog;
-var diffListLog;
-var allCombInScoreLog;
-var allCombInNameLog;
+let resLog;
+let diffListLog;
+let allCombInScoreLog;
+let allCombInNameLog;
 
 const pl = JSON.parse(localStorage.getItem("playerList")) || [];
-var playerListScoreForLane = {};
+let playerListScoreForLane = {};
 for(b of pl){
   playerListScoreForLane[b.name] = b.scores;
 }
 
-var playerListScore = JSON.parse(JSON.stringify(playerListScoreForLane)); // Deep copy
+let playerListScore = JSON.parse(JSON.stringify(playerListScoreForLane)); // Deep copy
+let playerList = Object.keys(playerListScoreForLane).sort();
+let rollLog = [];
 
-var playerList = Object.keys(playerListScoreForLane).sort();
-
-var rollLog = [];
-
-var registeredPlayerList = {
+let registeredPlayerList = {
   teamA: [], teamB: []
 };
 
-var selectedOption = "vs5_sel";
+let selectedOption = "vs5_sel";
 
-var snackbarIn = false;
-var snackbarAlertIn = false;
-var snackbarZ = 1;
+let snackbarIn = false;
+let snackbarAlertIn = false;
+let snackbarZ = 1;
+
+let confirmOpen = false;
+let appDownOpen = false;
+let logOpen = false;
 
 const FAILSAFE_THRESHOLD = 1000000;
 const BACKGROUND_NUMBER = 6;
@@ -84,15 +86,19 @@ function snackbarAlertWarn(msg) {
 
 function showCustomConfirm(message) {
   return new Promise((resolve) => {
+    confirmOpen = true;
+
     document.getElementById('confirmMessage').textContent = message;
     document.getElementById('customConfirmOverlay').style.display = 'flex';
 
     document.getElementById('confirmYes').onclick = () => {
+      confirmOpen = false;
       document.getElementById('customConfirmOverlay').style.display = 'none';
       resolve(true); // User clicked Yes
     };
 
     document.getElementById('confirmNo').onclick = () => {
+      confirmOpen = false;
       document.getElementById('customConfirmOverlay').style.display = 'none';
       resolve(false); // User clicked No
     };
@@ -293,6 +299,7 @@ function removePlayerFromTeam(team, index) {
     registeredPlayerList.teamB.splice(index, 1);
   }
 
+  snackbarAlertNormal("참가자를 삭제하였습니다.");
   updateTeamTable();
 }
 
@@ -325,7 +332,6 @@ async function rollLine(deleteLastLog){
   const consec = Number(document.getElementById("consec").value);
   const encControl = document.getElementById("encControl").value;
 
-  let isSingle = true;
   let isForced = false;
   let result = [];
   switch(rollMode){
@@ -335,9 +341,20 @@ async function rollLine(deleteLastLog){
       for(let i = 0; i < registeredPlayerList.teamA.length; i++){
         result.push(registeredPlayerList.teamA[i]);
       }
-      while(true){ // Intentional code design for more QoL
+      while(true){
         shuffle(result);
-        break;
+
+        // last place pity
+        let lastPlacePity = 0; let lastPlayer = result.at(-1);
+        for(let i = 0; i < rollLog.length; i++){
+          if(rollLog.at(-1-i).mode != 'vs5_sel') break;
+          if(rollLog.at(-1-i).team[`${registeredPlayerList.teamA.length}등`] == lastPlayer){
+            lastPlacePity++;
+          }
+        }
+
+        if(Math.random() < Math.pow(0.5, lastPlacePity)) break;
+        else{ shuffle(result); break; }
       }
       
       // Update table
@@ -768,10 +785,12 @@ async function rollLine(deleteLastLog){
       }
       break;
   }
+
+  const now = new Date();
   rollLog.push(
     {
       mode: rollMode,
-      timestamp: Date().toLocaleString("ko-KR", { timeZone: "JST" }),
+      timestamp: `${now.getYear()+1900}/${(now.getMonth()+1 < 10) ? '0' + (now.getMonth()+1) : now.getMonth()+1}/${(now.getDate() < 10) ? '0' + now.getDate() : now.getDate()} ${(now.getHours() < 10) ? '0' + now.getHours() : now.getHours()}:${(now.getMinutes() < 10) ? '0' + now.getMinutes() : now.getMinutes()}:${(now.getSeconds() < 10) ? '0' + now.getSeconds() : now.getSeconds()}`,
       team: pendingLog
     }
   );
@@ -779,7 +798,7 @@ async function rollLine(deleteLastLog){
   // Auto copy
   let doCopy = document.getElementById("autoCopy").checked;
   if(doCopy){
-    navigator.clipboard.writeText(JSON.stringify(pendingLog).replaceAll('":{"', '\n').replaceAll('","', '\n').replaceAll('":"', ' ').replaceAll('"},"', '\n').replaceAll('"', '').replaceAll('}', '').replaceAll('{', ''))
+    navigator.clipboard.writeText('Session #' + rollLog.length + ` (${(now.getHours() < 10) ? '0' + now.getHours() : now.getHours()}:${(now.getMinutes() < 10) ? '0' + now.getMinutes() : now.getMinutes()}:${(now.getSeconds() < 10) ? '0' + now.getSeconds() : now.getSeconds()})` + '\n=====================\n' + JSON.stringify(pendingLog).replaceAll('":{"', '\n').replaceAll('","', '\n').replaceAll('":"', ' ').replaceAll('"},"', '\n').replaceAll('"', '').replaceAll('}', '').replaceAll('{', ''))
   }
 
   if(isForced){
@@ -807,6 +826,8 @@ function displayLog(){
 }
 
 function showLaneHistory() {
+  logOpen = true;
+
   const popup = document.getElementById("laneHistoryPopup");
   const content = document.getElementById("laneHistoryContent");
 
@@ -818,6 +839,7 @@ function showLaneHistory() {
 }
 
 function closeLaneHistory() {
+  logOpen = false;
   document.getElementById("laneHistoryPopup").style.display = "none";
 }
 
@@ -1142,6 +1164,8 @@ function redirectElectronDownload() {
   // Prevent duplicate popups
   if (document.getElementById("electronDownloadModal")) return;
 
+  appDownOpen = true;
+
   // Overlay
   const overlay = document.createElement("div");
   overlay.id = "electronDownloadModal";
@@ -1174,10 +1198,11 @@ function redirectElectronDownload() {
   // Description
   const desc = document.createElement("p");
   desc.innerText =
-    "자동 감지 기능은 Electron 네이티브 앱에서만 사용할 수 있습니다.";
+    "자동 감지 기능은 네이티브 앱에서만 사용할 수 있습니다.";
 
   // Download button
   const downloadBtn = document.createElement("button");
+  downloadBtn.id = "appDownloadYes";
   downloadBtn.innerText = "앱 다운로드";
   downloadBtn.className = "userInputButton";
   downloadBtn.style.marginRight = "10px";
@@ -1187,9 +1212,11 @@ function redirectElectronDownload() {
 
   // Close button
   const closeBtn = document.createElement("button");
+  closeBtn.id = "appDownloadNo";
   closeBtn.innerText = "닫기";
   closeBtn.className = "userInputButton";
   closeBtn.onclick = () => {
+    appDownOpen = false;
     document.body.removeChild(overlay);
   };
 
@@ -1317,10 +1344,18 @@ document.querySelectorAll(".tooltip").forEach(el => {
   });
 });
 
-document.addEventListener("keypress", (e) => {
+document.addEventListener("keydown", (e) => {
   if(e.code == 'Enter'){
     e.preventDefault();
-    if(document.getElementById("customConfirmOverlay").style.display != "flex"){ rollLine(false); }
+    // if(document.getElementById("customConfirmOverlay").style.display != "flex"){ rollLine(false); }
+    if(confirmOpen){ document.getElementById('confirmYes').click(); }
+    else if(appDownOpen){ document.getElementById('appDownloadYes').click(); }
+    else{ rollLine(false); }
+  }
+  else if(e.code == 'Escape'){
+    if(confirmOpen){ document.getElementById('confirmNo').click(); }
+    else if(appDownOpen){ document.getElementById('appDownloadNo').click(); }
+    else if(logOpen){ closeLaneHistory(); }
   }
   else if(e.code == 'KeyR'){ registerTeamPlayers('teamA'); }
   else if(e.code == 'KeyA'){ registerTeamPlayers('all'); }

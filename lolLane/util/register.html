@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <title>플레이어 등록</title>
   </head>
-  <body style='margin-left: 30px; height: 100vh; width: 100vw; background-repeat : no-repeat; background-size : cover; overflow-x: visible; overflow-y: scroll;'>
+  <body style='margin-left: 30px; height: 100vh; width: 100vw; background-repeat : no-repeat; background-size : cover; overflow-x: hidden; overflow-y: scroll;'>
     <h1 id="subtitle" style="margin-left: 30px;">플레이어 등록 / 관리</h1>
     <div class="containerReg">
       <div class="regSetupArea">
@@ -39,7 +39,7 @@
         <div class="presetArea">
           <p id="regArea">플레이어 프리셋 등록/공유</p>
           
-          <input type="textarea" id="presetCode" class="userInputBoxLarge" placeholder="플레이어 프리셋 코드">
+          <input type="textarea" id="presetCode" class="userInputBoxLarge" placeholder="플레이어 프리셋 코드 (미입력 시 기본 프리셋 로드)">
           <button id="loadPresetButton" class="userInputButton"  onclick="loadPlayerPresetCode()">불러오기</button>
           <button id="sharePresetButton" class="userInputButton" onclick="copyPlayerPreset()">프리셋 공유</button>
         </div>
@@ -67,7 +67,7 @@
 
         <!-- Return to main -->
         <div class="regReturnArea">
-          <button class="regReturnButton" onclick="gotoMain()">메인으로 돌아가기</button>
+          <button class="regReturnButton" style="margin-bottom: 50px;" onclick="gotoMain()">메인으로 돌아가기 🗗</button>
         </div>
       </div>
     </div>
